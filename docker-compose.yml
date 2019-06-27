@@ -1,0 +1,59 @@
+version: '3.4'
+
+services:
+
+  nginx:
+    build: './nginx'
+    networks:
+      - ${NETWORK}
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - php
+      - mysql
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf/supervisord.conf:/etc/supervisord.conf
+
+      - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/sites-available/ebncana.com.conf
+      - ./sites/germanautoexport.com/conf/germanautoexport.com.conf:/etc/nginx/sites-available/germanautoexport.com.conf
+
+  mysql:
+    build: './mysql'
+    networks:
+      - ${NETWORK}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_DEFAULT_USER}
+      MYSQL_PASSWORD: ${MYSQL_DEFAULT_PASSWORD}
+
+  phpmyadmin:
+    build: './phpmyadmin'
+    networks:
+      - ${NETWORK}
+    environment:
+      - PMA_HOST=mysql
+    restart: always
+    depends_on:
+    - mysql
+
+  php:
+    build: './php'
+    networks:
+      - ${NETWORK}
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./sites/ebncana.com/public:/var/www/ebncana.com/public
+      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
+
+networks:
+    webserver:
+        external: true
