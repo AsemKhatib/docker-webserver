@@ -4,6 +4,7 @@ services:
 
   nginx:
     build: './nginx'
+    container_name: nginx
     networks:
       - ${NETWORK}
     ports:
@@ -18,10 +19,13 @@ services:
       - ./nginx/conf/supervisord.conf:/etc/supervisord.conf
 
       - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/sites-available/ebncana.com.conf
+      - ./sites/ebncana.com/public:/var/www/html/ebncana.com/public
       - ./sites/germanautoexport.com/conf/germanautoexport.com.conf:/etc/nginx/sites-available/germanautoexport.com.conf
+      - ./sites/germanautoexport.com/public:/var/www/html/germanautoexport.com/public
 
   mysql:
     build: './mysql'
+    container_name: mysql
     networks:
       - ${NETWORK}
     ports:
@@ -36,6 +40,7 @@ services:
 
   phpmyadmin:
     build: './phpmyadmin'
+    container_name: phpmyadmin
     networks:
       - ${NETWORK}
     environment:
@@ -46,13 +51,14 @@ services:
 
   php:
     build: './php'
+    container_name: php
     networks:
       - ${NETWORK}
     ports:
       - "9000:9000"
     volumes:
-      - ./sites/ebncana.com/public:/var/www/ebncana.com/public
-      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
+      - ./sites/ebncana.com/public:/var/www/html/ebncana.com/public
+      - ./sites/germanautoexport.com/public:/var/www/html/germanautoexport.com/public
 
 networks:
     webserver:
