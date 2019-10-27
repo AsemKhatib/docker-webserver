@@ -17,11 +17,11 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf/supervisord.conf:/etc/supervisord.conf
-
-      - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/sites-available/ebncana.com.conf
-      - ./sites/ebncana.com/public:/var/www/html/ebncana.com/public
-      - ./sites/germanautoexport.com/conf/germanautoexport.com.conf:/etc/nginx/sites-available/germanautoexport.com.conf
-      - ./sites/germanautoexport.com/public:/var/www/html/germanautoexport.com/public
+      - ./phpmyadmin/phpmyadmin.conf:/etc/nginx/conf.d/phpmyadmin.com.conf
+      - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/conf.d/ebncana.com.conf
+      - ./sites/ebncana.com/public:/var/www/ebncana.com/public
+      - ./sites/germanautoexport.com/conf/germanautoexport.com.conf:/etc/nginx/conf.d/germanautoexport.com.conf
+      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
 
   mysql:
     build: './mysql'
@@ -43,6 +43,8 @@ services:
     container_name: phpmyadmin
     networks:
       - ${NETWORK}
+    ports:
+      - "8090:80"
     environment:
       - PMA_HOST=mysql
     restart: always
@@ -57,8 +59,8 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./sites/ebncana.com/public:/var/www/html/ebncana.com/public
-      - ./sites/germanautoexport.com/public:/var/www/html/germanautoexport.com/public
+      - ./sites/ebncana.com/public:/var/www/ebncana.com/public
+      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
 
 networks:
     webserver:
