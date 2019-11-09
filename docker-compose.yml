@@ -17,11 +17,34 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf/supervisord.conf:/etc/supervisord.conf
+
       - ./phpmyadmin/phpmyadmin.conf:/etc/nginx/conf.d/phpmyadmin.com.conf
+
       - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/conf.d/ebncana.com.conf
       - ./sites/ebncana.com/public:/var/www/ebncana.com/public
-      - ./sites/germanautoexport.com/conf/germanautoexport.com.conf:/etc/nginx/conf.d/germanautoexport.com.conf
-      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
+
+      - ./sites/localhost/conf/localhost.conf:/etc/nginx/conf.d/localhost.conf
+      - ./sites/localhost/public:/var/www/html
+
+  apache:
+    build: './apache'
+    container_name: apache
+    networks:
+      - ${NETWORK}
+    ports:
+      - "8080:80"
+    links:
+      - php
+      - mysql
+    volumes:
+      - ./apache/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+
+      - ./sites/localhost/vhosts/localhost.conf:/usr/local/apache2/conf/vhosts/localhost.conf
+      - ./sites/localhost/public:/var/www/html
+      
+      - ./sites/germanautoexport.localhost/vhosts/germanautoexport.localhost.conf:/usr/local/apache2/conf/vhosts/germanautoexport.localhost.conf
+      - ./sites/germanautoexport.localhost/public:/var/www/germanautoexport.localhost/public
+
 
   mysql:
     build: './mysql'
@@ -60,7 +83,8 @@ services:
       - "9000:9000"
     volumes:
       - ./sites/ebncana.com/public:/var/www/ebncana.com/public
-      - ./sites/germanautoexport.com/public:/var/www/germanautoexport.com/public
+      - ./sites/germanautoexport.localhost/public:/var/www/germanautoexport.localhost/public
+      - ./sites/localhost/public:/var/www/html
 
 networks:
     webserver:
