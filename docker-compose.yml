@@ -20,9 +20,6 @@ services:
 
       - ./phpmyadmin/phpmyadmin.conf:/etc/nginx/conf.d/phpmyadmin.com.conf
 
-      - ./sites/ebncana.com/conf/ebncana.com.conf:/etc/nginx/conf.d/ebncana.com.conf
-      - ./sites/ebncana.com/public:/var/www/ebncana.com/public
-
       - ./sites/localhost/conf/localhost.conf:/etc/nginx/conf.d/localhost.conf
       - ./sites/localhost/public:/var/www/html
 
@@ -41,7 +38,7 @@ services:
 
       - ./sites/localhost/vhosts/localhost.conf:/usr/local/apache2/conf/vhosts/localhost.conf
       - ./sites/localhost/public:/var/www/html
-      
+
       - ./sites/germanautoexport.localhost/vhosts/germanautoexport.localhost.conf:/usr/local/apache2/conf/vhosts/germanautoexport.localhost.conf
       - ./sites/germanautoexport.localhost/public:/var/www/germanautoexport.localhost/public
 

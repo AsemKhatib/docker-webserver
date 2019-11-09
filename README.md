@@ -12,10 +12,12 @@
 
 * Xdebug
 * PHP GD
+* Composer
 
 ## Requirements
 
 * [Docker Native](https://www.docker.com/products/overview)
+* [docker-compose](https://docs.docker.com/compose/install/)
 
 ## Running
 
