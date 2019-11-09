@@ -3,12 +3,10 @@
 ## Technology included
 
 * [Nginx](http://nginx.org/)
+* [Apache](http://httpd.apache.org)
 * [MySQL 5.7](http://www.mysql.com/)
-* [PHP 7.2](http://php.net/)
-* Redis
-* Redis commander
-* Mailhog
-* PHPMyAdmin
+* [PHP 7.3](http://php.net/)
+* [PHPMyAdmin](https://www.phpmyadmin.net)
 
 ## Plus
 
